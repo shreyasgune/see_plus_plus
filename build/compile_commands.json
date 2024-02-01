@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/app/build",
-  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/starter.dir/main.cpp.o -c /app/main.cpp",
-  "file": "/app/main.cpp"
-}
-]
