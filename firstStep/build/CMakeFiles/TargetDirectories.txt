@@ -1,3 +1,0 @@
-/cpp_stuff/build/CMakeFiles/starter.dir
-/cpp_stuff/build/CMakeFiles/edit_cache.dir
-/cpp_stuff/build/CMakeFiles/rebuild_cache.dir

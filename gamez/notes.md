@@ -80,3 +80,12 @@ EntityManager will be factory design pattern
 - Syntax can be a bit confusing
 - Can be hard to read code if its too customized
 - Compiler/Linker error triage
+
+### C++ Compilation Process
+1. You have your source code (file.cpp)
+2. All of your source code files and header files get run through the pre-processor, where your `include` , `define` etc, get processed. This is where you could get error.
+3. After that, all your library pulls or definitions, get added to a massive source-code file.
+4. this "pre-processor output" megafile is then run through the compiler. This is where you can get an error.
+5. After compilation, you get an object file created (`file.cpp` --> `file.o`)
+6. The linker then links the object files together, to create the executable binary (`file`). This is also where you can get, a linker error.
+
