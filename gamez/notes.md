@@ -89,3 +89,70 @@ EntityManager will be factory design pattern
 5. After compilation, you get an object file created (`file.cpp` --> `file.o`)
 6. The linker then links the object files together, to create the executable binary (`file`). This is also where you can get, a linker error.
 
+### Some housekeeping note about C++
+- you don't want to compile all your files, everyime. You only want to recompile the things that you have changed.
+- Linking is much faster than compiling. Generate the new object files `file.o` if there are changes is `file.cpp`
+- C++ is separated into header `file.h` (declarations) files and cpp `file.cpp` (definitions) files.
+- Example of declaration: `int sum(int x, int y);`
+- Example of a definition : `int sum(int x, int y) { return x+y; }`
+- Header files contain class declarations or definitions. It gets annoying, defining all your classes in the same file.
+- Header file explainer
+  - You see the class functionality at a glace, reduces cognitive load.
+  - Separates the design from the implementation.
+  - Headers don't change that often, so you're reducing the compile time.
+  - Something to watch out for, is cyclic dependencies, which could be hard to detect. (Class A depends on Class B and Class B depends on Class A)
+  - Example
+    ```
+    //my_class.h
+
+        namespace N
+        {
+            class my_class
+            {
+                //declaring the function
+                public:
+                    void do_something();
+
+            };
+        }
+    ```
+
+    and the cpp file for this would be
+    ```
+    //my_class.cpp
+
+        #include <my_class.h> // header in the local dir
+        #include <iostream> // header in standard lib
+        
+        using namespace N;
+        using namespace std;
+
+        //defining the function
+        void my_class::do_something()
+        {
+            cout << "do something!" << endl;
+        }
+    ```
+    and this would be then used by
+    ```
+    // my_program.cpp
+
+        #include <my_class.h>
+
+        using namespace N;
+
+        int main()
+        {
+            //create a class object
+            my_class mc;
+
+            //call our function
+            mc.do_something();
+
+            return 0;
+        }
+    ```
+    and we get the output
+    ```
+    
+    ```
