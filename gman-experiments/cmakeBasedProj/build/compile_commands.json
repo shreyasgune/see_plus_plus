@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/sgune/devs/see_plus_plus/gman-experiments/cmakeBasedProj/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/cmakegmanproj.dir/main.cpp.o -c /home/sgune/devs/see_plus_plus/gman-experiments/cmakeBasedProj/main.cpp",
+  "file": "/home/sgune/devs/see_plus_plus/gman-experiments/cmakeBasedProj/main.cpp"
+}
+]
