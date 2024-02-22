@@ -153,6 +153,43 @@ EntityManager will be factory design pattern
         }
     ```
     and we get the output
+    - Class example
     ```
+    class Point
+    {
+        int m_x = 0; // private by default
+        int m_y = 0; // private
+    public:
+        Point(int x, int y);
+        int getX();
+        int getY();
+    };
+
+    ```
+    - Class Constructor
+    ```
+    Point::Point(int x, int y)
+    {
+        m_x = x;
+        m_y = y;
+    }
+    ```
+    This is an inefficient way of doing things, because when you call the constructor, you're assigning the m_x and m_y to 0 by default, and then spending some more time re-assigning value of x to m_x and y to m_y.
+    To avoid that, you do :
     
+        - // Member Initializer list
+        Point::Point(int x, int y)
+            : m_x(x)
+            , m_y(y)
+            {
+
+            }
+    You CAN set the value of const var using initializer list
+    
+    - Class Destructor
+    ``` 
+    Point::~Point()
+    {
+        //clean up here
+    }
     ```
