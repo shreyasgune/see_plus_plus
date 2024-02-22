@@ -1,0 +1,8 @@
+- Install CMake extensions pack on VSCode
+- Install CMake on your OS (I used `sudo apt-get install -y cmake`)
+- do a `whereis cmake` and you should see   `/usr/bin/cmake`
+- Set that as the path in your cmake path option in VSCode preferences/extensions
+- Ctrl/Cmd + Shift + P and select CMake quick start. This will auto create `CMakeList.txt`
+- Make sure to have your main.cpp and other files in the proj folder where you're doing this. 
+- Once you do a build-all-project by right-clicking on the CMakeList.txt, it will add in the build folder where your binary exists (along with other helpful bits)
+- You can also debug by hitting the Run tab and selecting debug-option (pick the right compiler for your needs)

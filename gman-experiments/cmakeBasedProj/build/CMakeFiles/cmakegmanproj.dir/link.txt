@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -L/usr/local/opt/ruby/lib -rdynamic CMakeFiles/cmakegmanproj.dir/main.cpp.o -o cmakegmanproj 
