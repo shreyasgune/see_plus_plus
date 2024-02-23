@@ -110,7 +110,12 @@ int main(int argc, char * argv[])
     const Student s2("General", "Kenobi", 1, 6.66);
     Student s3("General", "Grevious", 2, 3.14);
 
-    // if you have a const object [say, const Student s4("x","y",17,34.1)], you NEED to declare the calling function as const as well, to ensure that the calling function is not changing anything, [say, void print() const {}]. Its called const correctness: any place where you have a function that is not changing the internals of a class, make it const.
+    /* if you have a const object [say, const Student s4("x","y",17,34.1)], 
+    you NEED to declare the calling function as const as well, 
+    to ensure that the calling function is not changing anything, 
+    [say, void print() const {}]. 
+    Its called const correctness: any place where you have a function that is not changing the internals of a class, make it const.
+    */
     
     Course jedi101("JEDI 101");
     jedi101.addStudent(s2);
