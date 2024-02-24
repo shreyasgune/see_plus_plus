@@ -253,6 +253,7 @@ EntityManager will be factory design pattern
     - OS finds a contiguous chunk of memory and returns a pointer to it
     - `Pt* p = new Pt(5,4)` : on the heap, `5 -> 0x1 address`, `5 -> 0x2 address` but the address `0x1` that `p` is assigned, that's on the stack.
     - When scope ends, stack gets cleared but heap is still allocated. To clear heap, you can `delete p;` . There are other ways as well.
+### Pointers and Memory Management
 - C++ Pointers
     - pointer stores memory address
     - modifying the pointer var modifies the address it points to
@@ -292,5 +293,65 @@ EntityManager will be factory design pattern
     - Pass by `const` reference : whenever we pass a variable to a function that we don't want to modify, we use `const` - cuz it declares that the var can't be modified inside the function, only used.
     - Pass by reference means we're only sending a 8-byte refernce instead of that large data copy stuff in pass by val.
     - When to use `pass by value` ? when using primitives like int, cuz it faster. You don't have to dereference anything. Also, you can pass stuff like `std::shared_ptr<T>` by value.
-    
 
+- RAII - Resource Acquisition Is Initialization
+    - bind the lifecycle of a resource that must be acquired before use to the lifetime of an object
+    - makes life easier by implementing things in a way that automatically manages memory/resources within an object
+    - Encapsulate each resource in a class.
+    - Class constructor acquires the resource and inits it.
+    - destructor, releases it.
+    - example
+    ```
+    class IntArray
+    {
+        int *array;
+    public:
+        //constructor
+        IntArray(size_t size)
+        {
+            //asking for memory from heap
+            array = new int[size];
+        }
+        //destructor
+        ~IntArray()
+        {
+            //resource released
+            delete [] array;
+        }
+
+        int &operator[] (size_t i)
+        {
+            return array[i];
+        }
+    }
+    ```
+    used in
+    ```
+    #include "IntArray.h"
+
+    int main()
+    {
+        IntArray arr(10); //mem allocated by constructor call
+
+        arr[5] = 21;
+
+    } // destructor called and mem is de-allocated
+    ```
+    - It can be a pain to have to write a class every time we want our memory to be allocated and released with the use of class defined constructor and destructor calls, for EVERY data type we want to store a pointer to (see how we had to make a class for just an array of type `int`)
+    > as a solution, C++ has smart pointers.
+
+- Smart Pointers
+ - `std::shared_ptr<T>` will be our solution. It does basically all the things that you saw in the `class IntArray` above.
+ - It's basically a pointer wrapped in a class.
+ - It's a reference counted pointer -- Internal counter is set to 1.
+ - every time a shared_ptr is copied, its `counter += 1`
+ - every time a shared_otr is destructed, its `counter -= 1`
+ - when `counter == 0`, resource is deallocated, memory is released.
+
+- To sum up:
+    - use stack 
+        - for small local variables
+        - pass variables by const reference if size > 8 bytes
+    - if you need heap memory, use smart_pointers
+        - `std::shared_ptr<T> myVar;`
+        - `std::shared_ptr<Base> = std::make_shared<Derived>();`
