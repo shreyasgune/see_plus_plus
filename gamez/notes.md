@@ -355,3 +355,36 @@ EntityManager will be factory design pattern
     - if you need heap memory, use smart_pointers
         - `std::shared_ptr<T> myVar;`
         - `std::shared_ptr<Base> = std::make_shared<Derived>();`
+### Why RAW pointers can be dangerous
+- Check out the example:
+```
+    int a = 10;
+    int* pa = &a;
+    
+    int b = 25;
+    int* pb = &b;
+
+    *(pb+1) = 17; //address of b plus 4 bytes == address of a
+
+```
+- Check it out, (as an example)
+```
+    a is at address 0x7ffd28376e5c
+    b is at address 0x7ffd28376e58
+```    
+- they are 4 bytes apart.  
+- pb is of type: INT
+- when we add 1 to it, it will add the number of bytes, of the data type.
+- Since '1' is a 4 byte long int, we are basically adding address - 4 bytes in the example
+- What we should be getting:
+```
+        a is at address 0x7ffd28376e5c with value 10
+        b is at address 0x7ffd28376e58 with value 25
+
+```
+- what we actually get:
+```
+        a is at address 0x7ffd28376e5c with value 17
+        b is at address 0x7ffd28376e58 with value 25
+```
+- because a was modified due to
