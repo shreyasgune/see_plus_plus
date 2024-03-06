@@ -2,6 +2,8 @@
 #include <bitset>
 #include <sstream>
 #include <vector>
+#include <cmath>
+#include <cassert>
 
 // Function to convert IP address to binary representation
 std::string ip_to_binary(const std::string& ip) {
@@ -11,11 +13,33 @@ std::string ip_to_binary(const std::string& ip) {
 
     while (std::getline(ss, token, '.')) {
         int octet = std::stoi(token);
+        assert(octet >= 0 && octet <= 255); // Ensure octet is in valid range
         octets.push_back(std::bitset<8>(octet).to_string());
     }
 
     return octets[0] + octets[1] + octets[2] + octets[3];
 }
+
+// Function to convert binary IP address to dotted-decimal notation
+std::string binary_to_ip(const std::string& binary_ip) {
+    std::string ip;
+    for (int i = 0; i < 32; i += 8) {
+        std::string octet = binary_ip.substr(i, 8);
+        int decimal = std::stoi(octet, nullptr, 2);
+        ip += std::to_string(decimal);
+        if (i < 24) {
+            ip += ".";
+        }
+    }
+    return ip;
+}
+
+
+// Function to calculate total number of hosts
+uint64_t calculate_total_hosts(int cidr_prefix) {
+    return static_cast<uint64_t>(pow(2, 32 - cidr_prefix));
+}
+
 
 // Function to calculate CIDR prefix length
 int calculate_cidr_prefix(const std::string& ip1, const std::string& ip2) {
@@ -45,6 +69,30 @@ int calculate_cidr_prefix(const std::string& ip1, const std::string& ip2) {
     return cidr_prefix;
 }
 
+// Function to calculate first and last IP address in the range
+std::pair<std::string, std::string> calculate_ip_range(const std::string& ip, int cidr_prefix) {
+    // Convert IP address to binary representation
+    std::string ip_bin = ip_to_binary(ip);
+
+    // Calculate first IP address
+    std::string first_ip = ip_bin.substr(0, cidr_prefix);
+    while (first_ip.length() < 32) {
+        first_ip += "0";
+    }
+
+    // Calculate last IP address
+    std::string last_ip = ip_bin.substr(0, cidr_prefix);
+    while (last_ip.length() < 32) {
+        last_ip += "1";
+    }
+
+    // Convert binary IPs to dotted decimal notation
+    std::string first_ip_str = binary_to_ip(first_ip);
+    std::string last_ip_str = binary_to_ip(last_ip);
+
+    return std::make_pair(first_ip_str, last_ip_str);
+}
+
 int main(int argc, char* argv[]) {
     // Check if two IP addresses are provided
     if (argc != 3) {
@@ -60,5 +108,27 @@ int main(int argc, char* argv[]) {
 
     std::cout << "CIDR Prefix: /" << cidr_prefix << std::endl;
 
+    // Calculate IP range
+    auto ip_range = calculate_ip_range(ip1, cidr_prefix);
+    std::cout << "First IP: " << ip_range.first << std::endl;
+    std::cout << "Last IP: " << ip_range.second << std::endl;
+
+    // Calculate total number of hosts
+    uint64_t total_hosts = calculate_total_hosts(cidr_prefix);
+    std::cout << "Total Hosts: " << total_hosts << std::endl;
+
     return 0;
 }
+
+// compile: g++ -o cidr_gen ciderGen.cpp
+
+/*
+RUN Example
+./cidr_gen 134.191.196.161 134.191.196.190
+
+OUTPUT:
+CIDR Prefix: /27
+First IP: 134.191.196.160
+Last IP: 134.191.196.191
+Total Hosts: 32
+*/
